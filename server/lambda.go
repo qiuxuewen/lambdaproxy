@@ -92,6 +92,8 @@ func (self *AwsLambda) Invoke(payload []byte) error {
     }
     self.InvokeNum_++
     lamdaHandler := lambda.New(self.AwsSession_, &aws.Config{Region: aws.String(region)})
+    log.Printf("Waiting lambda ready")
+    time.Sleep(10 * time.Second)
     self.Mutex_.Unlock()
 
     _, err = lamdaHandler.Invoke(&lambda.InvokeInput{
