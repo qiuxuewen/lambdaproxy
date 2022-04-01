@@ -96,14 +96,17 @@ func (self *AwsLambda) Invoke(payload []byte) error {
     time.Sleep(10 * time.Second)
     self.Mutex_.Unlock()
 
-    _, err = lamdaHandler.Invoke(&lambda.InvokeInput{
-        FunctionName: aws.String(self.Name_),
-        Payload:      payload,
-    })
+    for i := 1; i <= 10; i++ {
+        _, err = lamdaHandler.Invoke(&lambda.InvokeInput{
+            FunctionName: aws.String(self.Name_),
+            Payload:      payload,
+        })
 
-    if err != nil {
+        if err == nil {
+            break
+        }
         log.Fatalf("lambda invoke failed: %v", err)
-        return err
+        time.Sleep(2 * time.Second)
     }
     return nil
 }
