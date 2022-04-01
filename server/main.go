@@ -25,7 +25,7 @@ var (
 func main() {
     flag.Parse()
 
-    lambdaTimeoutS := *__LambdaIntervalS + 10
+    lambdaTimeoutS := *__LambdaIntervalS + 20
 
     regions := strings.Split(*__Regions, ",")
     awsLambda, err := NewAwsLambda(*__LambdaName, *__AwsIamRoleName, regions, lambdaTimeoutS, *__LambdaMemorySize)
